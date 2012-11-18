@@ -52,13 +52,13 @@ show_version=no
 while test $# -gt 0 ; do
    case "${1}" in
       -h | --help | --h* )
-         echo "${usage}" 1>&2; exit 0 ;;
+         echo "${usage}" 1>&2; rm -f $tmpout ; exit 0 ;;
       --localdir=* | --l*=* )
          localdir="`echo \"${1}\" | sed -e 's/^[^=]*=//'`"
          shift ;;
       -l | --localdir | --l*)
          shift
-         test $# -eq 0 && { echo "${usage}" 1>&2; exit 1; }
+         test $# -eq 0 && { echo "${usage}" 1>&2; rm -f $tmpout; exit 1; }
          localdir="${1}"
          shift ;;
       --macrodir=* | --m*=* )
@@ -66,7 +66,7 @@ while test $# -gt 0 ; do
          shift ;;
       -m | --macrodir | --m* )
          shift
-         test $# -eq 0 && { echo "${usage}" 1>&2; exit 1; }
+         test $# -eq 0 && { echo "${usage}" 1>&2; rm -f $tmpout; exit 1; }
          AC_MACRODIR="${1}"
          shift ;;
       --version | --v* )
@@ -76,7 +76,7 @@ while test $# -gt 0 ; do
       - )	# Use stdin as input.
         break ;;
       -* )
-        echo "${usage}" 1>&2; exit 1 ;;
+        echo "${usage}" 1>&2; rm -f $tmpout; exit 1 ;;
       * )
         break ;;
    esac
@@ -86,13 +86,14 @@ if test $show_version = yes; then
   version=`sed -n 's/define.AC_ACVERSION.[ 	]*\([0-9.]*\).*/\1/p' \
     $AC_MACRODIR/acgeneral.m4`
   echo "Autoconf version $version"
+  rm -f $tmpout
   exit 0
 fi
 
 case $# in
   0) infile=configure.in ;;
   1) infile="$1" ;;
-  *) echo "$usage" >&2; exit 1 ;;
+  *) echo "$usage" >&2; rm -f $tmpout; exit 1 ;;
 esac
 
 trap 'rm -f $tmpin $tmpout; exit 1' 1 2 15
@@ -103,6 +104,7 @@ if test z$infile = z-; then
   infile=$tmpin
 elif test ! -r "$infile"; then
   echo "autoconf: ${infile}: No such file or directory" >&2
+  rm -f $tmpin $tmpout
   exit 1
 fi
 
@@ -111,6 +113,8 @@ if test -n "$localdir"; then
 else
   use_localdir=
 fi
+# Make sure we don't leave those around - they are annoying
+trap 'rm -f $tmpin $tmpout' 0
 
 # Use the frozen version of Autoconf if available.
 r= f=
@@ -118,7 +122,7 @@ r= f=
 case `$M4 --help < /dev/null 2>&1` in
 *reload-state*) test -r $AC_MACRODIR/autoconf.m4f && { r=--reload f=f; } ;;
 *traditional*) ;;
-*) echo Autoconf requires GNU m4 1.1 or later >&2; rm -f $tmpin; exit 1 ;;
+*) echo Autoconf requires GNU m4 1.1 or later >&2; rm -f $tmpin $tmpout; exit 1 ;;
 esac
 
 $M4 -I$AC_MACRODIR $use_localdir $r autoconf.m4$f $infile > $tmpout ||
@@ -154,6 +158,6 @@ $AWK '
 /__oline__/s/^\([0-9][0-9]*\):\(.*\)__oline__/\2\1/
 ' >&4
 
-rm -f $tmpout
+rm -f $tmpout $tmpin
 
 exit $status

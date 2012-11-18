@@ -35,13 +35,13 @@ test -z "${AC_MACRODIR}" && AC_MACRODIR=@datadir@
 while test $# -gt 0 ; do
    case "${1}" in 
       -h | --help | --h* )
-         echo "${usage}" 1>&2; exit 0 ;;
+         echo "${usage}" 1>&2; rm -f $sedtmp; exit 0 ;;
       --macrodir=* | --m*=* )
          AC_MACRODIR="`echo \"${1}\" | sed -e 's/^[^=]*=//'`"
          shift ;;
       -m | --macrodir | --m* ) 
          shift
-         test $# -eq 0 && { echo "${usage}" 1>&2; exit 1; }
+         test $# -eq 0 && { echo "${usage}" 1>&2; rm -f $sedtmp; exit 1; }
          AC_MACRODIR="${1}"
          shift ;;
       --version | --versio | --versi | --vers)
@@ -51,7 +51,7 @@ while test $# -gt 0 ; do
       - )	# Use stdin as input.
         break ;;
       -* )
-        echo "${usage}" 1>&2; exit 1 ;;
+        echo "${usage}" 1>&2; rm -f $sedtmp; exit 1 ;;
       * )
         break ;;
    esac
@@ -61,6 +61,7 @@ if test $show_version = yes; then
   version=`sed -n 's/define.AC_ACVERSION.[ 	]*\([0-9.]*\).*/\1/p' \
     $AC_MACRODIR/acgeneral.m4`
   echo "Autoconf version $version"
+  rm -f $sedtmp
   exit 0
 fi
 
@@ -68,6 +69,7 @@ fi
 
 tmpout=acupo.$$
 trap 'rm -f $sedtmp $tmpout; exit 1' 1 2 15
+trap 'rm -f $sedtmp' 0
 case $# in
   0) infile=configure.in; out="> $tmpout"
      # Make sure $infile can be read, and $tmpout has the same permissions.
