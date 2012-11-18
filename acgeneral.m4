@@ -1817,10 +1817,6 @@ AC_DEFUN(AC_TRY_RUN_NATIVE,
 [cat > conftest.$ac_ext <<EOF
 [#]line __oline__ "configure"
 #include "confdefs.h"
-ifelse(AC_LANG, CPLUSPLUS, [#ifdef __cplusplus
-extern "C" void exit(int);
-#endif
-])dnl
 [$1]
 EOF
 if AC_TRY_EVAL(ac_link) && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null

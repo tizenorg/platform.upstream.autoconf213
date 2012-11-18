@@ -152,7 +152,40 @@ else
     CXXFLAGS=
   fi
 fi
+
+AC_PROG_CXX_EXIT_DECLARATION
 ])
+
+
+# AC_PROG_CXX_EXIT_DECLARATION
+# -----------------------------
+# Find a valid prototype for exit and declare it in confdefs.h.
+AC_DEFUN(AC_PROG_CXX_EXIT_DECLARATION,
+[for ac_declaration in \
+   ''\
+   '#include <stdlib.h>' \
+   'extern "C" void std::exit (int) throw (); using std::exit;' \
+   'extern "C" void std::exit (int); using std::exit;' \
+   'extern "C" void exit (int) throw ();' \
+   'extern "C" void exit (int);' \
+   'void exit (int);'
+do
+  AC_TRY_COMPILE([#include <stdlib.h>
+$ac_declaration], 
+                 [exit (42);],
+                 [],
+                 [continue])
+  AC_TRY_COMPILE([$ac_declaration],
+                 [exit (42);],
+                 [break])
+done
+if test -n "$ac_declaration"; then
+  echo '#ifdef __cplusplus' >>confdefs.h
+  echo $ac_declaration      >>confdefs.h
+  echo '#endif'             >>confdefs.h
+fi
+])# AC_PROG_CXX_EXIT_DECLARATION
+
 
 dnl Determine a Fortran 77 compiler to use.  If `F77' is not already set
 dnl in the environment, check for `g77', `f77' and `f2c', in that order.
