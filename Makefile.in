@@ -49,7 +49,7 @@ bindir = @bindir@
 
 # Directory in which to install library files.
 datadir = @datadir@
-acdatadir = $(datadir)/autoconf
+acdatadir = $(datadir)/autoconf-2.13
 
 # Directory in which to install documentation info files.
 infodir = @infodir@
