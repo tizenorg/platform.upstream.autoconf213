@@ -1,7 +1,7 @@
 \input texinfo @c -*-texinfo-*-
 @c %**start of header
-@setfilename autoconf.info
-@settitle Autoconf
+@setfilename autoconf213.info
+@settitle Autoconf-2.13
 @c For double-sided printing, uncomment:
 @c @setchapternewpage odd
 @c %**end of header
@@ -17,7 +17,8 @@
 @ifinfo
 @format
 START-INFO-DIR-ENTRY
-* Autoconf: (autoconf).         Create source code configuration scripts.
+* Autoconf213: (autoconf213).   Create source code configuration scripts.
+                                This is a legacy version of autoconf.
 END-INFO-DIR-ENTRY
 @end format
 
