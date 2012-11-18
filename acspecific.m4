@@ -1419,6 +1419,8 @@ main() {
   r.ru_majflt = r.ru_minflt = 0;
   switch (fork()) {
   case 0: /* Child.  */
+    /* Unless we actually _do_ something, the kernel sometimes doesn't chalk up any system time to this process. */
+    if(fork()) { i = 123; wait(NULL); } else { i = 234; exit(0); }
     sleep(1); /* Give up the CPU.  */
     _exit(0);
   case -1: _exit(0); /* What can we do?  */
