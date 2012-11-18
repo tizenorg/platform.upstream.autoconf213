@@ -1043,7 +1043,7 @@ fi
 ])
 
 AC_DEFUN(AC_FUNC_MMAP,
-[AC_CHECK_HEADERS(unistd.h)
+[AC_CHECK_HEADERS(stdlib.h unistd.h sys/stat.h sys/types.h)
 AC_CHECK_FUNCS(getpagesize)
 AC_CACHE_CHECK(for working mmap, ac_cv_func_mmap_fixed_mapped,
 [AC_TRY_RUN([
@@ -1072,11 +1072,24 @@ AC_CACHE_CHECK(for working mmap, ac_cv_func_mmap_fixed_mapped,
 #include <fcntl.h>
 #include <sys/mman.h>
 
+#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+
+#if HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#if HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+
 /* This mess was copied from the GNU getpagesize.h.  */
 #ifndef HAVE_GETPAGESIZE
-# ifdef HAVE_UNISTD_H
-#  include <unistd.h>
-# endif
 
 /* Assume that all systems that can run configure have sys/param.h.  */
 # ifndef HAVE_SYS_PARAM_H
