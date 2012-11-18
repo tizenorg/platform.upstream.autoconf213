@@ -479,9 +479,9 @@ AC_SUBST([SET_MAKE])dnl
 AC_DEFUN(AC_PROG_RANLIB,
 [AC_CHECK_PROG(RANLIB, ranlib, ranlib, :)])
 
-dnl Check for mawk first since it's generally faster.
+dnl Don't check for mawk first even if it's generally faster.
 AC_DEFUN(AC_PROG_AWK,
-[AC_CHECK_PROGS(AWK, mawk gawk nawk awk, )])
+[AC_CHECK_PROGS(AWK, gawk mawk nawk awk, )])
 
 AC_DEFUN(AC_PROG_YACC,
 [AC_CHECK_PROGS(YACC, 'bison -y' byacc, yacc)])
