@@ -26,7 +26,7 @@ usage="\
 Usage: autoupdate [-h] [--help] [-m dir] [--macrodir=dir] 
        [--version] [template-file]" 
 
-sedtmp=/tmp/acups.$$
+sedtmp=`/bin/mktemp /tmp/acups.XXXXXX`
 # For debugging.
 #sedtmp=/tmp/acups
 show_version=no

@@ -194,9 +194,9 @@ if test -n "$syms"; then
   # Some fgrep's have limits on the number of lines that can be in the
   # pattern on the command line, so use a temporary file containing the
   # pattern.
-  (fgrep_tmp=${TMPDIR-/tmp}/autoh$$
+  (fgrep_tmp=`/bin/mktemp ${TMPDIR-/tmp}/autoh$$.XXXXXX`
    trap "rm -f $fgrep_tmp; exit 1" 1 2 15
-   cat > $fgrep_tmp <<EOF
+   cat >> $fgrep_tmp <<EOF
 $syms
 EOF
    fgrep -f $fgrep_tmp
