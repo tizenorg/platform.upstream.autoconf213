@@ -9,6 +9,7 @@ Release:        1
 Summary:        A GNU Tool for Automatically Configuring Source Code
 BuildArch:      noarch
 Source:         autoconf-%{version}.tar.bz2
+Source1001: 	autoconf213.manifest
 BuildRequires:  texinfo
 BuildRequires:  makeinfo
 
@@ -34,6 +35,7 @@ Authors:
 
 %prep
 %setup -n autoconf-%{version} -q
+cp %{SOURCE1001} .
 
 
 mv autoconf.texi autoconf213.texi
@@ -60,6 +62,7 @@ rm -f ${RPM_BUILD_ROOT}%{_infodir}/standards*
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %doc AUTHORS COPYING NEWS README TODO
 %{_prefix}/bin/*
