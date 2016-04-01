@@ -42,6 +42,9 @@ mv autoconf.texi autoconf213.texi
 rm -f autoconf.info
 
 %build
+export CFLAGS+=" -fvisibility=hidden"
+  export CXXFLAGS+=" -fvisibility=hidden"
+  
 ./configure --prefix=%{_prefix} --infodir=%{_infodir} --mandir=%{_mandir} \
             --program-suffix=-2.13
 make
